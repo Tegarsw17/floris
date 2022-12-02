@@ -22,9 +22,11 @@ export default async function handler(req, res) {
         strict: true,
       });
       const plant = await Plant.create(plantValidate);
-      res
-        .status(200)
-        .json({ data: plant, message: "data berhasil dimasukkan" });
+      res.status(200).json({
+        data: plant,
+        message: "data berhasil dimasukkan",
+        validation: plantValidate,
+      });
     } catch (error) {
       res.status(400).json({
         data: error,

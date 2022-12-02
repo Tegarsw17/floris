@@ -16,6 +16,7 @@ PlantLog.init(
   },
   {
     sequelize,
+    paranoid: true,
     modelName: "PlantLog",
     tableName: "plant_log",
   }
