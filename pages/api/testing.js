@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-const sequelize = require("../../database/db.config");
+// const sequelize = require("../../database/db.config");
 
 export default async function handler(req, res) {
   // try {
