@@ -1,17 +1,14 @@
 const { Sequelize } = require("sequelize");
 import * as pg from "pg";
 
-// const sequelize = new Sequelize(
-//   "postgresql://postgres:kedMYe^bM694XMGFW9kx@db.lprpwvtrtikvmcaizoeg.supabase.co:5432/postgres"
-// );
 // const sequelize = new Sequelize(process.env.NEXT_PUBLIC_DATABASE_CONNECTION);
 const sequelize = new Sequelize(
-  "postgres",
-  "postgres",
-  "kedMYe^bM694XMGFW9kx",
+  NEXT_PUBLIC_DATABASE,
+  NEXT_PUBLIC_USERNAME,
+  NEXT_PUBLIC_PASSWORD,
   {
-    host: "db.lprpwvtrtikvmcaizoeg.supabase.co",
-    dialect: "postgres",
+    host: NEXT_PUBLIC_HOST,
+    dialect: NEXT_PUBLIC_DATABASE,
     dialectModule: pg,
   }
 );
