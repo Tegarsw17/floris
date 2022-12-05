@@ -4,9 +4,9 @@ const sequelize = require("../../database/db.config");
 export default async function handler(req, res) {
   try {
     await sequelize.authenticate();
-    const data = "Connection has been established successfully.";
+    console.log("Connection has been established successfully.");
   } catch (error) {
-    const data = "Unable to connect to the database:" + error;
+    console.error("Unable to connect to the database:", error);
   }
-  res.status(200).json({ name: "Hello Tegar", data: data });
+  res.status(200).json({ name: "Hello Tegar" });
 }
