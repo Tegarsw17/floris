@@ -12,10 +12,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          {process.env.NEXT_PUBLIC_DATABASE_CONNECTION}
-          {/* Under Counstruction */}
-        </h1>
+        <h1 className={styles.title}>Under Counstruction</h1>
       </main>
     </div>
   );
