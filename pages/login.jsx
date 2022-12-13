@@ -38,7 +38,7 @@ const Login = () => {
 
     axios({
       method: "post",
-      url: `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/login`,
+      url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/user/login`,
       data: inputData,
     })
       .then((result) => {
