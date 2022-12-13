@@ -6,7 +6,9 @@ const key = process.env.NEXT_PUBLIC_JWT_PASSWORD;
 
 export default async function handler(req, res) {
   if (req.method != "POST") {
-    res.status(405).json({ status: "error", error: "Method Not Allowed" });
+    res
+      .status(405)
+      .json({ code: 405, status: "error", message: "Method Not Allowed" });
   }
 
   if (req.method === "POST") {
@@ -15,8 +17,9 @@ export default async function handler(req, res) {
       //   check field filled
       if (!username || !password) {
         return res.status(400).json({
+          code: 400,
           status: "error",
-          error: "Request missing username or password",
+          message: "Request missing username or password",
         });
       }
       const user = await User.findAll({
@@ -24,7 +27,9 @@ export default async function handler(req, res) {
       });
       //   check user exsit
       if (user.length == 0) {
-        res.status(400).json({ status: "error", error: "User Not Found" });
+        await res
+          .status(400)
+          .json({ code: 400, status: "error", message: "User Not Found" });
       }
       //   vallidate
       if (user.length > 0) {
@@ -37,8 +42,9 @@ export default async function handler(req, res) {
         //   check active
         if (userIsActive == false) {
           res.status(400).json({
+            code: 400,
             status: "error",
-            error: "You must be activated this account",
+            message: "You must be activated this account",
           });
         } else {
           const compare = await bcrypt.compare(password, userPassword);
@@ -50,18 +56,19 @@ export default async function handler(req, res) {
             };
             // sign jwt content/payload
             const token = jwt.sign(payload, key, { expiresIn: 86400 });
-            res.status(200).json({ success: true, message: token });
+            res.status(200).json({ status: "Ok", data: token });
           } else {
             res
               .status(400)
-              .json({ success: false, message: "wrong username or password" });
+              .json({ status: "error", message: "wrong username or password" });
           }
         }
       }
     } catch (error) {
+      console.log("salah 3");
       res
         .status(400)
-        .json({ error: error, message: "OMG something just hapen😢" });
+        .json({ error: "error", message: "OMG something just hapen😢" });
     }
   }
 }

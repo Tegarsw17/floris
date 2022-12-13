@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export function verifyToken(jwtToken) {
   try {
-    return jwt.verify(jwtToken, NEXT_PUBLIC_JWT_PASSWORD);
+    return jwt.verify(jwtToken, process.env.NEXT_PUBLIC_JWT_PASSWORD);
   } catch (e) {
     console.log("e:", e);
     return null;
@@ -27,5 +27,5 @@ export function getAppCookies(req) {
 export function setLogout(e) {
   e.preventDefault();
   Cookies.remove("token");
-  // Router.push('/');
+  Router.push("/login");
 }
