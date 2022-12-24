@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import Navbar from "../components/navbar";
 
-const Dashboard = () => {
+const Template = ({ title }) => {
   const router = useRouter();
   const token = Cookies.get("token");
   const profile = token ? verifyToken(token) : "";
@@ -27,11 +27,11 @@ const Dashboard = () => {
       <div className="w-full bg-[#f7f7f7]">
         <Navbar name={name} />
         <div className="m-4">
-          <h2>Dashboard</h2>
+          <h2>{title}</h2>
         </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default Template;
