@@ -6,6 +6,7 @@ Plant.init(
   {
     name: {
       type: DataTypes.STRING,
+      unique: true,
     },
     variety_id: {
       type: DataTypes.INTEGER,
@@ -18,6 +19,10 @@ Plant.init(
     },
     image: {
       type: DataTypes.STRING,
+    },
+    slug: {
+      type: DataTypes.STRING,
+      unique: true,
     },
   },
   {
