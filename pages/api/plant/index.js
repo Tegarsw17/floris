@@ -78,6 +78,7 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     try {
+      console.log("masalah 1");
       const form = new formidable.IncomingForm();
       form.parse(req, async function (err, fields, files) {
         const varietyId = fields.variety;
@@ -103,6 +104,7 @@ export default async function handler(req, res) {
           slug: values.slug,
           is_alive: true,
         });
+        console.log("masalah 2");
       });
       res.status(200).json({ message: "Data berhasil Ditambahkan" });
     } catch (error) {
