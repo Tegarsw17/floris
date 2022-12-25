@@ -78,7 +78,6 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     try {
-      console.log("masalah 1");
       const form = new formidable.IncomingForm();
       form.parse(req, async function (err, fields, files) {
         const varietyId = fields.variety;
