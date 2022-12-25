@@ -80,30 +80,34 @@ export default async function handler(req, res) {
     try {
       const form = new formidable.IncomingForm();
       form.parse(req, async function (err, fields, files) {
-        const varietyId = fields.variety;
-        const imgName = await generateNameImage(files.file, varietyId);
-        await saveFile(files.file, imgName);
+        try {
+          const varietyId = fields.variety;
+          const imgName = await generateNameImage(files.file, varietyId);
+          await saveFile(files.file, imgName);
 
-        const variety = await PlantVariety.findAll({
-          where: {
-            id: varietyId,
-          },
-        });
-        const plant = await Plant.findAll({
-          where: {
+          const variety = await PlantVariety.findAll({
+            where: {
+              id: varietyId,
+            },
+          });
+          const plant = await Plant.findAll({
+            where: {
+              variety_id: varietyId,
+            },
+          });
+
+          var values = await generateName(plant, variety);
+          const plantAdd = await Plant.create({
+            name: values.name,
+            image: imgName,
             variety_id: varietyId,
-          },
-        });
-
-        var values = await generateName(plant, variety);
-        const plantAdd = await Plant.create({
-          name: values.name,
-          image: imgName,
-          variety_id: varietyId,
-          slug: values.slug,
-          is_alive: true,
-        });
-        console.log("masalah 2");
+            slug: values.slug,
+            is_alive: true,
+          });
+          console.log(err);
+        } catch (error) {
+          console.log(error);
+        }
       });
       res.status(200).json({ message: "Data berhasil Ditambahkan" });
     } catch (error) {
