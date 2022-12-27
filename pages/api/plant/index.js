@@ -1,10 +1,14 @@
 import formidable from "formidable";
 import fs from "fs";
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+import streamifier from "streamifier";
 import { object, string, number, date, InferType, boolean } from "yup";
 const sequelize = require("../../../database/db.config");
 const Plant = require("../../../database/model/Plant");
 const PlantVariety = require("../../../database/model/PlantVariety");
 const sharp = require("sharp");
+dotenv.config();
 
 export const config = {
   api: {
@@ -12,16 +16,32 @@ export const config = {
   },
 };
 
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUD_NAME,
+  api_key: process.env.NEXT_PUBLIC_API_KEY,
+  api_secret: process.env.NEXT_PUBLIC_API_SECRET,
+  secure: true,
+});
+
 const saveFile = async (file, name) => {
   const data = fs.readFileSync(file.filepath);
-  // const name = await generateName(file.originalFilename);
-  // await fs.writeFileSync(`./public/${name}`, data);
-  // await fs.unlinkSync(file.filepath);
-  await sharp(data)
-    .webp({ quality: 20 })
-    .toFile("./public/" + name);
-  return;
+  const hasil = await sharp(data).webp({ quality: 20 }).toBuffer();
+  // var urlImg = [];
+  return new Promise((resolve, reject) => {
+    const uploadImg = cloudinary.uploader.upload_stream(
+      { resource_type: "image", folder: "floris", public_id: name },
+      function (err, result) {
+        if (result) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      }
+    );
+    streamifier.createReadStream(hasil).pipe(uploadImg);
+  });
 };
+// return;
 
 const generateName = async (lastName, variety) => {
   const variant = variety[0].dataValues.name;
@@ -66,7 +86,8 @@ const generateNameImage = async (name, variety) => {
   for (var i = 0; i < 5; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
-  return `${variety}-${result}-${datetime}.webp`;
+  // return `${variety}-${result}-${datetime}.webp`;
+  return `${variety}-${result}-${datetime}`;
 };
 
 export default async function handler(req, res) {
@@ -83,7 +104,8 @@ export default async function handler(req, res) {
         try {
           const varietyId = fields.variety;
           const imgName = await generateNameImage(files.file, varietyId);
-          await saveFile(files.file, imgName);
+          const imgUrl = await saveFile(files.file, imgName);
+          // console.log(imgUrl);
 
           const variety = await PlantVariety.findAll({
             where: {
@@ -99,12 +121,12 @@ export default async function handler(req, res) {
           var values = await generateName(plant, variety);
           const plantAdd = await Plant.create({
             name: values.name,
-            image: imgName,
+            image: imgUrl.secure_url,
             variety_id: varietyId,
             slug: values.slug,
             is_alive: true,
           });
-          console.log(err);
+          // console.log(err);
         } catch (error) {
           console.log(error);
         }
