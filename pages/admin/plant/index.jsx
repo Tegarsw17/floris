@@ -58,7 +58,8 @@ const PlantView = () => {
                     <td>{name.toUpperCase()}</td>
                     <td>{first_planting == null ? "-" : first_planting}</td>
                     <td>
-                      <Image src={`/${image}`} width={150} height={150} />
+                      {/* <Image src={`/${image}`} width={150} height={150} /> */}
+                      <Image src={image} width={150} height={150} alt="/" />
                     </td>
                   </tr>
                 );
