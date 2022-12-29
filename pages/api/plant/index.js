@@ -99,9 +99,11 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     try {
+      console.log("posisi 1");
       const form = new formidable.IncomingForm();
       form.parse(req, async function (err, fields, files) {
         try {
+          console.log("posisi 2");
           const varietyId = fields.variety;
           const imgName = await generateNameImage(files.file, varietyId);
           const imgUrl = await saveFile(files.file, imgName);
@@ -131,8 +133,10 @@ export default async function handler(req, res) {
           console.log(error);
         }
       });
+      console.log("posisi 3");
       res.status(200).json({ message: "Data berhasil Ditambahkan" });
     } catch (error) {
+      console.log("posisi 4");
       res.status(400).json({
         data: error,
         message: "data yang dimasukkan tidak valid",
