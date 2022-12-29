@@ -10,12 +10,6 @@ const PlantVariety = require("../../../database/model/PlantVariety");
 const sharp = require("sharp");
 dotenv.config();
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUD_NAME,
   api_key: process.env.NEXT_PUBLIC_API_KEY,
@@ -130,8 +124,8 @@ export default async function handler(req, res) {
             is_alive: true,
           });
           // console.log(err);
-        } catch (error) {
-          console.log(error);
+        } catch (err) {
+          console.log(err);
         }
       });
       res.status(200).json({ message: "Data berhasil Ditambahkan" });
@@ -169,3 +163,9 @@ export default async function handler(req, res) {
     }
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
